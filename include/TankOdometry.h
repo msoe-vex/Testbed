@@ -15,6 +15,8 @@ public:
     };
 
     void ResetEncoderTicks(double leftEncoderTicks = 0, double rightEncoderTicks = 0);
+
+    void Update(double leftEncoderRawTicks, double rightEncoderRawTicks, double trackWidth);
     void Update(double leftEncoderRawTicks, double rightEncoderRawTicks, Rotation2Dd gyroAngle);
 
     static TankOdometry* GetInstance();
@@ -26,6 +28,10 @@ public:
     Pose GetPose();
 
 private:
+    TankOdometry() = default;
+
+    static TankOdometry* m_instance;
+
     double m_leftTicksToDist;
     double m_rightTicksToDist;
 
@@ -37,8 +43,6 @@ private:
     bool m_poseReset = true;
 
     Pose m_robotPose = Pose(Vector2d(0, 0), Rotation2Dd());
-
-    static TankOdometry* m_instance;
 };
 
 

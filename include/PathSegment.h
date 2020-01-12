@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Waypoint.h"
+#include "Logger.h"
 #include <Eigen/Dense>
 
 using namespace Eigen;
