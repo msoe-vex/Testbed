@@ -27,6 +27,8 @@ public:
 
     Pose GetPose();
 
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 private:
     TankOdometry() = default;
 

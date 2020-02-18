@@ -14,7 +14,9 @@ struct Pose {
     }
 
     Pose() {
-        position = Vector2d();
-        angle = Rotation2Dd();
+        position = Vector2d(0, 0);
+        angle = Rotation2Dd(0);
     }
+
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };

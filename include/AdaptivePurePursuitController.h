@@ -25,5 +25,3 @@ public:
     DriveCommand Update(Pose robotPose, double currentTime);
 
 };
-
-
