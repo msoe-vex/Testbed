@@ -250,3 +250,15 @@ AutonAction::actionStatus WaitAction::Action() {
 		return AutonAction::CONTINUE;
 	}
 }
+
+PrintAction::PrintAction(string toPrint) {
+    m_toPrint = toPrint;
+}
+
+void PrintAction::ActionInit() {
+    cout << m_toPrint << endl;
+}
+
+AutonAction::actionStatus PrintAction::Action() {
+    return END;
+}

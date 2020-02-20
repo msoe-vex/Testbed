@@ -86,3 +86,13 @@ private:
 	Timer m_timer;
 	double m_duration;
 };
+
+class PrintAction : public AutonAction {
+public:
+    PrintAction(string toPrint);
+    void ActionInit();
+    actionStatus Action();
+
+private:
+    string m_toPrint;
+};
