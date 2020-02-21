@@ -2,13 +2,15 @@
 
 using namespace std;
 
-chassis chassis(constants::LEFT_FRONT_DRIVE_PORT, constants::LEFT_REAR_DRIVE_PORT,
+Chassis chassis(constants::LEFT_FRONT_DRIVE_PORT, constants::LEFT_REAR_DRIVE_PORT,
 		            constants::RIGHT_FRONT_DRIVE_PORT, constants::RIGHT_REAR_DRIVE_PORT);
 
-lift lift(constants::LEFT_LIFT_PORT, constants::RIGHT_LIFT_PORT,
+Lift lift(constants::LEFT_LIFT_PORT, constants::RIGHT_LIFT_PORT,
 	        constants::LIFT_LIMIT_PORT);
 
-intake intake(constants::LEFT_INTAKE_PORT, constants::RIGHT_INTAKE_PORT, constants::TRAY_TILT_PORT);
+Intake intake(constants::LEFT_INTAKE_PORT, constants::RIGHT_INTAKE_PORT);
+
+Tilt tilt(constants::TRAY_TILT_PORT, constants::TRAY_LIMIT_PORT);
 
 TestAuton testAuton(&chassis);
 
@@ -140,7 +142,7 @@ void autonomous() {
     testAuton.AutonInit();
 
     while(!testAuton.Complete()) {
-        chassis.periodic();
+        chassis.Periodic();
         testAuton.Auton();
         pros::delay(10);
     }
@@ -165,28 +167,11 @@ void opcontrol() {
 	while (true) {
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
-		chassis.setSpeed(left, right);
-		chassis.periodic();
+		chassis.SetSpeed(left, right);
+		chassis.Periodic();
 
-		lift.manualControl(master);
-
-		lift.periodic();
-
-		if (master.get_digital(DIGITAL_R1) == 1) {
-			intake.setSpeed(127, 127);
-		} else if (master.get_digital(DIGITAL_R2) == 1) {
-			intake.setSpeed(-127, -127);
-		} else {
-			intake.setSpeed(0, 0);
-		}
-
-		if (master.get_digital(DIGITAL_X) == 1) {
-			intake.pivot(127);
-		} else if (master.get_digital(DIGITAL_B) == 1) {
-			intake.pivot(-127);
-		} else {
-			intake.pivot(0);
-		}
+		lift.ManualControl(master);
+		lift.Periodic();
 
 		auto pose = TankOdometry::GetInstance()->GetPose();
 

@@ -11,14 +11,14 @@ using namespace Eigen;
 
 class TestAuton : public Autonomous {
 public:
-    TestAuton(chassis * chassis);
+    TestAuton(Chassis *chassis);
     void AddNodes();
     void AutonInit();
 
 private:
-    chassis * m_chassis;
+    Chassis *m_chassis;
 
-    Node * m_driveToCubes = nullptr;
-    Node * m_intakeCubes = nullptr;
-    Node * m_spinInCircles = nullptr;
+    Node *m_driveToCubes = nullptr;
+    Node *m_intakeCubes = nullptr;
+    Node *m_spinInCircles = nullptr;
 };

@@ -1,6 +1,6 @@
 #include "TestAuton.h"
 
-TestAuton::TestAuton(chassis * chassis) : Autonomous("Test Auton") {
+TestAuton::TestAuton(Chassis *chassis) : Autonomous("Test Auton") {
     m_chassis = chassis;
 }
 

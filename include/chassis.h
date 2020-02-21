@@ -2,21 +2,21 @@
 
 #include "API.h"
 
-class chassis {
+class Chassis {
 public:
   pros::Motor *leftFrontDriveMotor, *leftRearDriveMotor,
               *rightFrontDriveMotor, *rightRearDriveMotor;
 
-  chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
+  Chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
           int rightFrontDriveMotorPort, int rightRearDriveMotorPort);
 
-  void setSpeed(int leftDriveSpeed, int rightDriveSpeed);
+  void SetSpeed(int leftDriveSpeed, int rightDriveSpeed);
 
-  double getLeftSpeed();
+  double GetLeftSpeed();
 
-  double getRightSpeed();
+  double GetRightSpeed();
 
-  void periodic();
+  void Periodic();
 
-  ~chassis();
+  ~Chassis();
 };

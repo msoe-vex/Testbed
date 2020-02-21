@@ -1,20 +1,21 @@
 #pragma once
 
 #include "API.h"
+#include "Constants.h"
 
-class intake {
+class Intake {
 public:
-  pros::Motor *leftIntakeMotor, *rightIntakeMotor, *intakePivotMotor;
+  pros::Motor *leftIntakeMotor, *rightIntakeMotor;
 
-  intake(int leftIntakeMotorPort, int rightIntakeMotorPort, int intakePivotMotorPort);
+  Intake(int leftIntakeMotorPort, int rightIntakeMotorPort);
 
-  void setSpeed(int leftSpeed, int rightSpeed);
+  void SetSpeed(int leftSpeed, int rightSpeed);
 
-  void pivotUp();
+  void HoldIntake();
 
-  void pivotDown();
+  void Periodic();
 
-  ~intake();
+  void ManualControl(pros::Controller controller);
 
-  void pivot(int speed);
+  ~Intake();
 };

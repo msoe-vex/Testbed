@@ -1,35 +1,33 @@
 #include "Intake.h"
 
-intake::intake(int leftIntakeMotorPort, int rightIntakeMotorPort, int intakePivotMotorPort) {
+Intake::Intake(int leftIntakeMotorPort, int rightIntakeMotorPort) {
   leftIntakeMotor = new pros::Motor(leftIntakeMotorPort, true);
   rightIntakeMotor = new pros::Motor(rightIntakeMotorPort, false);
-
-  intakePivotMotor = new pros::Motor(intakePivotMotorPort, false);
 }
 
-void intake::setSpeed(int leftIntakeSpeed, int rightIntakeSpeed) {
+void Intake::SetSpeed(int leftIntakeSpeed, int rightIntakeSpeed) {
   leftIntakeMotor->move(leftIntakeSpeed);
   rightIntakeMotor->move(rightIntakeSpeed);
 }
 
-void intake::pivotUp() {
-  
+void Intake::ManualControl(pros::Controller controller) {
+  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1) {
+    SetSpeed(127, 127);
+  } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
+    SetSpeed(-127, -127);
+  } else {
+    SetSpeed(0, 0);
+  }
 }
 
-void intake::pivotDown() {
+void Intake::Periodic() {
 
 }
 
-void intake::pivot(int speed) {
-  intakePivotMotor->move(speed);
-}
-
-intake::~intake() {
+Intake::~Intake() {
   free(leftIntakeMotor);
   free(rightIntakeMotor);
-  free(intakePivotMotor);
 
   leftIntakeMotor = 0;
   rightIntakeMotor = 0;
-  intakePivotMotor = 0;
 }

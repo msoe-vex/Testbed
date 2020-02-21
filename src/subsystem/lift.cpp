@@ -1,33 +1,33 @@
 #include "Lift.h"
 
-lift::lift(int leftLiftMotorPort, int rightLiftMotorPort, int liftLimitPort) {
+Lift::Lift(int leftLiftMotorPort, int rightLiftMotorPort, int liftLimitPort) {
   leftLiftMotor = new pros::Motor(leftLiftMotorPort, false);
   rightLiftMotor = new pros::Motor(rightLiftMotorPort, true);
 
   liftLimitSwitch = new pros::ADIDigitalIn(liftLimitPort);
 }
 
-void lift::manualControl(pros::Controller controller) {
+void Lift::ManualControl(pros::Controller controller) {
   if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1 ||
       controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
-    setLiftState(liftState::Manual, 0);
+    SetLiftState(liftState::Manual, 0);
   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN) == 1) {
-    setLiftState(liftState::LowGoal, constants::LOW_GOAL_POS);
+    SetLiftState(liftState::LowGoal, constants::LOW_GOAL_POS);
   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT) == 1) {
-    setLiftState(liftState::FourStack, constants::FOUR_STACK_POS);
+    SetLiftState(liftState::FourStack, constants::FOUR_STACK_POS);
   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT) == 1) {
-    setLiftState(liftState::MediumGoal, constants::MID_GOAL_POS);
+    SetLiftState(liftState::MediumGoal, constants::MID_GOAL_POS);
   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP) == 1) {
-    setLiftState(liftState::HighGoal, constants::HIGH_GOAL_POS);
+    SetLiftState(liftState::HighGoal, constants::HIGH_GOAL_POS);
   }
 
   if (currentLiftState == liftState::Manual) {
     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1) {
-      setPower(127);
+      SetPower(127);
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
-      setPower(-127);
+      SetPower(-127);
     } else {
-      setPower(0);
+      SetPower(0);
     }
   }
 
@@ -40,26 +40,26 @@ void lift::manualControl(pros::Controller controller) {
   }
 }
 
-double lift::getPosition() {
+double Lift::GetPosition() {
   return (leftLiftMotor->get_position() + rightLiftMotor->get_position()) / 2;
 }
 
-double lift::getVelocity() {
+double Lift::GetVelocity() {
   return leftLiftMotor->get_actual_velocity();
 }
 
-void lift::setLiftState(liftState liftState) {
+void Lift::SetLiftState(liftState liftState) {
   currentLiftState = liftState;
 }
 
-void lift::setLiftState(liftState liftState, double setpoint) {
+void Lift::SetLiftState(liftState liftState, double setpoint) {
   currentLiftState = liftState;
   currentSetpoint = setpoint;
 }
 
-void lift::periodic() {
+void Lift::Periodic() {
   // Reset sensors
-  if (liftLimitSwitch->get_value() == 1) {
+  if (liftLimitSwitch->get_value() == 0) {
     leftLiftMotor->tare_position();
     rightLiftMotor->tare_position();
   }
@@ -73,12 +73,12 @@ void lift::periodic() {
     case liftState::MediumGoal:
     case liftState::HighGoal:
     case liftState::VariableSetpointPID:
-      setPIDPosition(currentSetpoint);
+      SetPIDPosition(currentSetpoint);
     break;
   }
 }
 
-lift::~lift() {
+Lift::~Lift() {
   free(leftLiftMotor);
   free(rightLiftMotor);
 
@@ -88,17 +88,17 @@ lift::~lift() {
 
 // Private methods
 
-void lift::setPower(int liftPower) {
+void Lift::SetPower(int liftPower) {
   leftLiftMotor->move(liftPower);
   rightLiftMotor->move(liftPower);
 }
 
-void lift::setPIDPosition(double position) {
+void Lift::SetPIDPosition(double position) {
   leftLiftMotor->move_absolute(position, constants::LIFT_MAX_VEL);
   rightLiftMotor->move_absolute(position, constants::LIFT_MAX_VEL);
 }
 
-void lift::setPIDVelocity(double liftVelocity) {
+void Lift::SetPIDVelocity(double liftVelocity) {
   leftLiftMotor->move_velocity(liftVelocity);
   rightLiftMotor->move_velocity(liftVelocity);
 }

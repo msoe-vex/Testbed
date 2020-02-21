@@ -1,8 +1,7 @@
 #include "Chassis.h"
-#include "../../include/chassis.h"
-#include "../../include/TankOdometry.h"
+#include "TankOdometry.h"
 
-chassis::chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
+Chassis::Chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
                  int rightFrontDriveMotorPort, int rightRearDriveMotorPort) {
   leftFrontDriveMotor = new pros::Motor(leftFrontDriveMotorPort, false);
   leftRearDriveMotor = new pros::Motor(leftRearDriveMotorPort, false);
@@ -22,26 +21,26 @@ chassis::chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
     TankOdometry::GetInstance()->Initialize(encoderConfig, encoderConfig);
 }
 
-void chassis::periodic() {
+void Chassis::Periodic() {
     TankOdometry::GetInstance()->Update(leftFrontDriveMotor->get_position(), rightFrontDriveMotor->get_position(), 10.5);
 }
 
-void chassis::setSpeed(int leftDriveSpeed, int rightDriveSpeed) {
+void Chassis::SetSpeed(int leftDriveSpeed, int rightDriveSpeed) {
   leftFrontDriveMotor->move(leftDriveSpeed);
   leftRearDriveMotor->move(leftDriveSpeed);
   rightFrontDriveMotor->move(rightDriveSpeed);
   rightRearDriveMotor->move(rightDriveSpeed);
 }
 
-double chassis::getLeftSpeed() {
+double Chassis::GetLeftSpeed() {
   return (leftFrontDriveMotor->get_position() + leftRearDriveMotor->get_position()) / 2;
 }
 
-double chassis::getRightSpeed() {
+double Chassis::GetRightSpeed() {
   return (rightFrontDriveMotor->get_position() + rightRearDriveMotor->get_position()) / 2;
 }
 
-chassis::~chassis() { // Deconstructor
+Chassis::~Chassis() { // Deconstructor
   free(leftFrontDriveMotor); // Free memory
   free(leftRearDriveMotor); // Free memory
   free(rightFrontDriveMotor); // Free memory

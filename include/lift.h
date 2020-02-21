@@ -3,7 +3,7 @@
 #include "API.h"
 #include "Constants.h"
 
-class lift {
+class Lift {
 public:
   enum class liftState {
     Manual,
@@ -24,26 +24,26 @@ public:
 
   pros::ADIDigitalIn *liftLimitSwitch;
 
-  lift(int leftLiftMotorPort, int rightLiftMotorPort, int liftLimitPort);
+  Lift(int leftLiftMotorPort, int rightLiftMotorPort, int liftLimitPort);
 
-  void manualControl(pros::Controller controller);
+  void ManualControl(pros::Controller controller);
 
-  double getPosition();
+  double GetPosition();
 
-  double getVelocity();
+  double GetVelocity();
 
-  void setLiftState(liftState liftState);
+  void SetLiftState(liftState liftState);
 
-  void setLiftState(liftState liftState, double setpoint);
+  void SetLiftState(liftState liftState, double setpoint);
 
-  void periodic();
+  void Periodic();
 
-  ~lift();
+  ~Lift();
 
 private:
-  void setPower(int liftPower);
+  void SetPower(int liftPower);
 
-  void setPIDPosition(double position);
+  void SetPIDPosition(double position);
 
-  void setPIDVelocity(double velocity);
+  void SetPIDVelocity(double velocity);
 };
