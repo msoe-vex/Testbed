@@ -1,4 +1,4 @@
-#include "chassis.h"
+#include "Chassis.h"
 
 chassis::chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
                  int rightFrontDriveMotorPort, int rightRearDriveMotorPort) {
@@ -14,6 +14,16 @@ void chassis::setSpeed(int leftDriveSpeed, int rightDriveSpeed) {
   rightFrontDriveMotor->move(rightDriveSpeed);
   rightRearDriveMotor->move(rightDriveSpeed);
 }
+
+double chassis::getLeftSpeed() {
+  return (leftFrontDriveMotor->get_position() + leftRearDriveMotor->get_position()) / 2;
+}
+
+double chassis::getRightSpeed() {
+  return (rightFrontDriveMotor->get_position() + rightRearDriveMotor->get_position()) / 2;
+}
+
+
 
 chassis::~chassis() { // Deconstructor
   free(leftFrontDriveMotor); // Free memory

@@ -1,4 +1,4 @@
-#include "intake.h"
+#include "Intake.h"
 
 intake::intake(int leftIntakeMotorPort, int rightIntakeMotorPort, int intakePivotMotorPort) {
   leftIntakeMotor = new pros::Motor(leftIntakeMotorPort, true);

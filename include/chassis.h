@@ -12,5 +12,9 @@ public:
 
   void setSpeed(int leftDriveSpeed, int rightDriveSpeed);
 
+  double getLeftSpeed();
+
+  double getRightSpeed();
+
   ~chassis();
 };

@@ -1,4 +1,4 @@
-#include "autonomous.h"
+#include "Autonomous.h"
 
 autonomous::autonomous(autonMode auton) {
   switch(auton) {

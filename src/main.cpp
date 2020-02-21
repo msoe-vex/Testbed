@@ -73,13 +73,8 @@ void opcontrol() {
 		int right = master.get_analog(ANALOG_RIGHT_Y);
 		chassis.setSpeed(left, right);
 
-		if (master.get_digital(DIGITAL_L1) == 1) {
-			lift.setSpeed(127);
-		} else if (master.get_digital(DIGITAL_L2) == 1) {
-			lift.setSpeed(-127);
-		} else {
-			lift.setSpeed(5);
-		}
+		lift.setLiftState(master);
+		lift.periodic(master);
 
 		if (master.get_digital(DIGITAL_R1) == 1) {
 			intake.setSpeed(127, 127);
@@ -97,7 +92,9 @@ void opcontrol() {
 			intake.pivot(0);
 		}
 
-		pros::lcd::print(0, "Lift Position: ", lift.getPosition());
+		pros::lcd::print(0, "Lift Velocity: %2.2f", lift.getVelocity());
+		pros::lcd::print(1, "Left Drive: %2.2f", chassis.getLeftSpeed());
+		pros::lcd::print(2, "Right Drive: %2.2f", chassis.getRightSpeed());
 
 		pros::delay(20);
 	}
