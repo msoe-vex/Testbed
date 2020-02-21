@@ -13,7 +13,7 @@ void intake::setSpeed(int leftIntakeSpeed, int rightIntakeSpeed) {
 }
 
 void intake::pivotUp() {
-
+  
 }
 
 void intake::pivotDown() {

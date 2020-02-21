@@ -22,25 +22,25 @@ public:
 
   pros::Motor *leftLiftMotor, *rightLiftMotor;
 
-  lift(int leftLiftMotorPort, int rightLiftMotorPort);
+  pros::ADIDigitalIn *liftLimitSwitch;
+
+  lift(int leftLiftMotorPort, int rightLiftMotorPort, int liftLimitPort);
+
+  void manualControl(pros::Controller controller);
 
   double getPosition();
 
   double getVelocity();
 
-  void setLiftState(pros::Controller controller);
-
   void setLiftState(liftState liftState);
 
   void setLiftState(liftState liftState, double setpoint);
 
-  void periodic(pros::Controller controller);
+  void periodic();
 
   ~lift();
 
 private:
-  void manualControl(pros::Controller controller);
-
   void setPower(int liftPower);
 
   void setPIDPosition(double position);

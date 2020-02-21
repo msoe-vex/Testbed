@@ -1,19 +1,13 @@
 #include "Lift.h"
 
-lift::lift(int leftLiftMotorPort, int rightLiftMotorPort) {
+lift::lift(int leftLiftMotorPort, int rightLiftMotorPort, int liftLimitPort) {
   leftLiftMotor = new pros::Motor(leftLiftMotorPort, false);
   rightLiftMotor = new pros::Motor(rightLiftMotorPort, true);
+
+  liftLimitSwitch = new pros::ADIDigitalIn(liftLimitPort);
 }
 
-double lift::getPosition() {
-  return (leftLiftMotor->get_position() + rightLiftMotor->get_position()) / 2;
-}
-
-double lift::getVelocity() {
-  return leftLiftMotor->get_actual_velocity();
-}
-
-void lift::setLiftState(pros::Controller controller) {
+void lift::manualControl(pros::Controller controller) {
   if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1 ||
       controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
     setLiftState(liftState::Manual, 0);
@@ -27,6 +21,16 @@ void lift::setLiftState(pros::Controller controller) {
     setLiftState(liftState::HighGoal, constants::HIGH_GOAL_POS);
   }
 
+  if (currentLiftState == liftState::Manual) {
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1) {
+      setPower(127);
+    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
+      setPower(-127);
+    } else {
+      setPower(0);
+    }
+  }
+
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y) == 1 &&
       !isStateScoring) {
     isStateScoring = true;
@@ -34,6 +38,14 @@ void lift::setLiftState(pros::Controller controller) {
       isStateScoring) {
     isStateScoring = false;
   }
+}
+
+double lift::getPosition() {
+  return (leftLiftMotor->get_position() + rightLiftMotor->get_position()) / 2;
+}
+
+double lift::getVelocity() {
+  return leftLiftMotor->get_actual_velocity();
 }
 
 void lift::setLiftState(liftState liftState) {
@@ -45,10 +57,16 @@ void lift::setLiftState(liftState liftState, double setpoint) {
   currentSetpoint = setpoint;
 }
 
-void lift::periodic(pros::Controller controller) {
+void lift::periodic() {
+  // Reset sensors
+  if (liftLimitSwitch->get_value() == 1) {
+    leftLiftMotor->tare_position();
+    rightLiftMotor->tare_position();
+  }
+
   switch(currentLiftState) {
     case liftState::Manual:
-      manualControl(controller);
+    // Do nothing
     break;
     case liftState::LowGoal:
     case liftState::FourStack:
@@ -69,16 +87,6 @@ lift::~lift() {
 }
 
 // Private methods
-
-void lift::manualControl(pros::Controller controller) {
-  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1) {
-    setPower(127);
-  } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
-    setPower(-127);
-  } else {
-    setPower(4);
-  }
-}
 
 void lift::setPower(int liftPower) {
   leftLiftMotor->move(liftPower);

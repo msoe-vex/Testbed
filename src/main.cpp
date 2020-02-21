@@ -1,13 +1,12 @@
 #include "main.h"
 
-chassis chassis(19, 2, 20, 1);
+chassis chassis(constants::LEFT_FRONT_DRIVE_PORT, constants::LEFT_REAR_DRIVE_PORT,
+		            constants::RIGHT_FRONT_DRIVE_PORT, constants::RIGHT_REAR_DRIVE_PORT);
 
-lift lift(9, 8);
+lift lift(constants::LEFT_LIFT_PORT, constants::RIGHT_LIFT_PORT,
+	        constants::LIFT_LIMIT_PORT);
 
-intake intake(6, 5, 7);
-
-/* BAD PORTS */
-
+intake intake(constants::LEFT_INTAKE_PORT, constants::RIGHT_INTAKE_PORT, constants::TRAY_TILT_PORT);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -65,16 +64,15 @@ void autonomous() {}
  */
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
 
 	while (true) {
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
 		chassis.setSpeed(left, right);
 
-		lift.setLiftState(master);
-		lift.periodic(master);
+		lift.manualControl(master);
+
+		lift.periodic();
 
 		if (master.get_digital(DIGITAL_R1) == 1) {
 			intake.setSpeed(127, 127);
@@ -91,10 +89,6 @@ void opcontrol() {
 		} else {
 			intake.pivot(0);
 		}
-
-		pros::lcd::print(0, "Lift Velocity: %2.2f", lift.getVelocity());
-		pros::lcd::print(1, "Left Drive: %2.2f", chassis.getLeftSpeed());
-		pros::lcd::print(2, "Right Drive: %2.2f", chassis.getRightSpeed());
 
 		pros::delay(20);
 	}
