@@ -2,11 +2,13 @@
 
 using namespace std;
 
-chassis chassis(19, 2, 20, 1);
+chassis chassis(constants::LEFT_FRONT_DRIVE_PORT, constants::LEFT_REAR_DRIVE_PORT,
+		            constants::RIGHT_FRONT_DRIVE_PORT, constants::RIGHT_REAR_DRIVE_PORT);
 
-lift lift(9, 8);
+lift lift(constants::LEFT_LIFT_PORT, constants::RIGHT_LIFT_PORT,
+	        constants::LIFT_LIMIT_PORT);
 
-intake intake(6, 5, 7);
+intake intake(constants::LEFT_INTAKE_PORT, constants::RIGHT_INTAKE_PORT, constants::TRAY_TILT_PORT);
 
 TestAuton testAuton(&chassis);
 
@@ -158,40 +160,40 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-    pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-    while (true) {
-        int left = master.get_analog(ANALOG_LEFT_Y);
-        int right = master.get_analog(ANALOG_RIGHT_Y);
-        chassis.setSpeed(left, right);
-        chassis.periodic();
+	while (true) {
+		int left = master.get_analog(ANALOG_LEFT_Y);
+		int right = master.get_analog(ANALOG_RIGHT_Y);
+		chassis.setSpeed(left, right);
+		chassis.periodic();
 
-        lift.periodic(master);
+		lift.manualControl(master);
 
-        if (master.get_digital(DIGITAL_R1) == 1) {
-            intake.setSpeed(127, 127);
-        } else if (master.get_digital(DIGITAL_R2) == 1) {
-            intake.setSpeed(-127, -127);
-        } else {
-            intake.setSpeed(0, 0);
-        }
+		lift.periodic();
 
-        if (master.get_digital(DIGITAL_X) == 1) {
-            intake.pivot(127);
-        } else if (master.get_digital(DIGITAL_B) == 1) {
-            intake.pivot(-127);
-        } else {
-            intake.pivot(0);
-        }
+		if (master.get_digital(DIGITAL_R1) == 1) {
+			intake.setSpeed(127, 127);
+		} else if (master.get_digital(DIGITAL_R2) == 1) {
+			intake.setSpeed(-127, -127);
+		} else {
+			intake.setSpeed(0, 0);
+		}
 
-        auto pose = TankOdometry::GetInstance()->GetPose();
+		if (master.get_digital(DIGITAL_X) == 1) {
+			intake.pivot(127);
+		} else if (master.get_digital(DIGITAL_B) == 1) {
+			intake.pivot(-127);
+		} else {
+			intake.pivot(0);
+		}
 
-        lv_obj_align(robotImg, NULL, LV_ALIGN_IN_BOTTOM_LEFT, inchesToPixels(pose.position.x() + (143.0 / 2.0)),
-                     -inchesToPixels(pose.position.y()));
-        lv_obj_set_top(robotImg, true);
+		auto pose = TankOdometry::GetInstance()->GetPose();
 
-        pros::delay(20);
+		lv_obj_align(robotImg, NULL, LV_ALIGN_IN_BOTTOM_LEFT, inchesToPixels(pose.position.x() + (143.0 / 2.0)),
+								 -inchesToPixels(pose.position.y()));
+		lv_obj_set_top(robotImg, true);
 
-
-    }
+		pros::delay(20);
+	}
 }

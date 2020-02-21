@@ -36,9 +36,10 @@
 
 #include "api.h"
 
-#include "chassis.h"
-#include "lift.h"
-#include "intake.h"
+#include "Constants.h"
+#include "Chassis.h"
+#include "Lift.h"
+#include "Intake.h"
 #include "Auton.h"
 #include "PathManager.h"
 #include "TankOdometry.h"
