@@ -5,6 +5,9 @@
 #include "PathManager.h"
 #include "chassis.h"
 #include "Math/Pose.h"
+#include <Eigen/Dense>
+
+using namespace Eigen;
 
 class TestAuton : public Autonomous {
 public:

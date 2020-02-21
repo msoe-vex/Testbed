@@ -53,13 +53,14 @@ void initialize() {
 
     lv_label_set_text(output, "Loading paths.......");
 
-    printf("Loading paths.......");
+    printf("Loading paths.......\n");
 
     PathManager::GetInstance()->LoadPathsText(pathText);
+    //PathManager::GetInstance()->LoadPathsFile("/usd/path.json");
 
     int numPaths = PathManager::GetInstance()->NumPaths();
 
-    printf("Loaded %i paths", numPaths);
+    printf("Loaded %i paths\n", numPaths);
 
     if (numPaths > 0) {
         lv_label_set_text(output, "Sucessfully loaded paths!");
@@ -133,6 +134,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+    printf("Starting Auto\n");
     testAuton.AutonInit();
 
     while(!testAuton.Complete()) {

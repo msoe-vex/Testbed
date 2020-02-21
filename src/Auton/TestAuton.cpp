@@ -5,6 +5,7 @@ TestAuton::TestAuton(chassis * chassis) : Autonomous("Test Auton") {
 }
 
 void TestAuton::AutonInit() {
+    Autonomous::AutonInit();
     auto position = PathManager::GetInstance()->GetPath("WallToCubeStack3").getFirstWaypoint().position;
     auto angle = PathManager::GetInstance()->GetPath("WallToCubeStack3").getFirstWaypoint().rotation;
     TankOdometry::GetInstance()->SetCurrentPose(Pose(Vector2d(position.getX(), position.getY()), Rotation2Dd(angle.getRadians())));
