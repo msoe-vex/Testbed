@@ -1,4 +1,7 @@
 #include "main.h"
+#include "Auton.h"
+
+using namespace std;
 
 chassis chassis(19, 2, 20, 1);
 
@@ -8,6 +11,25 @@ intake intake(6, 5, 7);
 
 /* BAD PORTS */
 
+pros::ADIGyro *gyro;
+
+lv_obj_t *robotImg;
+lv_obj_t *output;
+
+vector <Path> paths;
+
+lv_point_t line_points[100];
+
+LV_IMG_DECLARE(redField);
+LV_IMG_DECLARE(robot);
+
+double inchesToPixels(double inches) {
+    return inches * (400.0 / 143.0);
+}
+
+double pixelsToInches(double pixels) {
+    return pixels * (143.0 / 400.0);
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -16,7 +38,67 @@ intake intake(6, 5, 7);
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
+    lv_obj_t *img1 = lv_img_create(lv_scr_act(), NULL);
+    lv_img_set_src(img1, &redField);
+    lv_obj_align(img1, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+
+    robotImg = lv_img_create(lv_scr_act(), NULL);
+    lv_img_set_src(robotImg, &robot);
+    lv_obj_align(robotImg, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 70, 0);
+
+    output = lv_label_create(lv_scr_act(), NULL);
+    lv_label_set_align(output, LV_LABEL_ALIGN_LEFT);
+    lv_obj_align(output, NULL, LV_ALIGN_IN_TOP_LEFT, 5, 5);
+
+    lv_label_set_text(output, "Loading paths.......");
+
+    printf("Opening file\n");
+
+    PathManager::GetInstance()->LoadPathsText(thing);
+
+    int numPaths = PathManager::GetInstance()->NumPaths();
+
+    if (numPaths > 0) {
+        lv_label_set_text(output, "Sucessfully loaded paths!");
+
+        paths = PathManager::GetInstance()->GetPaths();
+        auto waypoints = paths[0].getWaypoints();
+
+        //lv_point_t line_points[] = {{0, 0}, {5, 5}, {70, 70}, {120, 10}, {180, 60}, {240, 10} };
+
+        for (int i = 0; i < waypoints.size(); i++) {
+            lv_point_t point;
+            int x = inchesToPixels((143.0 / 2.0) + waypoints[i].position.getX());
+            int y = inchesToPixels(waypoints[i].position.getY());
+
+            point.x = x;
+            point.y = y;
+
+            line_points[i] = point;
+
+            printf("X: %i Y: %i\n", x, y);
+        }
+
+
+        static lv_style_t style_line;
+        lv_style_copy(&style_line, &lv_style_plain);
+        style_line.line.color = LV_COLOR_CYAN;
+        style_line.line.width = 2;
+        style_line.line.rounded = 1;
+
+        /*Copy the previous line and apply the new style*/
+        lv_obj_t *line1;
+        line1 = lv_line_create(lv_scr_act(), NULL);
+        lv_line_set_points(line1, line_points, waypoints.size());     /*Set the points*/
+        lv_line_set_style(line1, &style_line);
+        lv_line_set_y_invert(line1, true);
+        lv_obj_set_top(line1, true);
+        lv_obj_align(line1, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+    } else {
+        lv_label_set_text(output, "Failed to load paths");
+    }
+
+    gyro = new pros::ADIGyro('A');
 }
 
 /**
@@ -64,38 +146,37 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
+    pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-	while (true) {
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
-		chassis.setSpeed(left, right);
+    while (true) {
+        int left = master.get_analog(ANALOG_LEFT_Y);
+        int right = master.get_analog(ANALOG_RIGHT_Y);
+        chassis.setSpeed(left, right);
 
-		lift.setLiftState(master);
-		lift.periodic(master);
+        lift.periodic(master);
 
-		if (master.get_digital(DIGITAL_R1) == 1) {
-			intake.setSpeed(127, 127);
-		} else if (master.get_digital(DIGITAL_R2) == 1) {
-			intake.setSpeed(-127, -127);
-		} else {
-			intake.setSpeed(0, 0);
-		}
+        if (master.get_digital(DIGITAL_R1) == 1) {
+            intake.setSpeed(127, 127);
+        } else if (master.get_digital(DIGITAL_R2) == 1) {
+            intake.setSpeed(-127, -127);
+        } else {
+            intake.setSpeed(0, 0);
+        }
 
-		if (master.get_digital(DIGITAL_X) == 1) {
-			intake.pivot(127);
-		} else if (master.get_digital(DIGITAL_B) == 1) {
-			intake.pivot(-127);
-		} else {
-			intake.pivot(0);
-		}
+        if (master.get_digital(DIGITAL_X) == 1) {
+            intake.pivot(127);
+        } else if (master.get_digital(DIGITAL_B) == 1) {
+            intake.pivot(-127);
+        } else {
+            intake.pivot(0);
+        }
 
-		pros::lcd::print(0, "Lift Velocity: %2.2f", lift.getVelocity());
-		pros::lcd::print(1, "Left Drive: %2.2f", chassis.getLeftSpeed());
-		pros::lcd::print(2, "Right Drive: %2.2f", chassis.getRightSpeed());
+        lv_obj_align(robotImg, NULL, LV_ALIGN_IN_BOTTOM_LEFT, inchesToPixels(pose.position.x() + (143.0 / 2.0)),
+                     -inchesToPixels(pose.position.y()));
+        lv_obj_set_top(robotImg, true);
 
-		pros::delay(20);
-	}
+        pros::delay(20);
+
+
+    }
 }
