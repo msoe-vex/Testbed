@@ -9,19 +9,17 @@ chassis::chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
   rightFrontDriveMotor = new pros::Motor(rightFrontDriveMotorPort, true);
   rightRearDriveMotor = new pros::Motor(rightRearDriveMotorPort, true);
 
-    leftFrontDriveMotor.tare_position();
-    leftRearDriveMotor.tare_position();
-    rightFrontDriveMotor.tare_position();
-    rightRearDriveMotor.tare_position();
+    leftFrontDriveMotor->tare_position();
+    leftRearDriveMotor->tare_position();
+    rightFrontDriveMotor->tare_position();
+    rightRearDriveMotor->tare_position();
 
     TankOdometry::EncoderConfig encoderConfig;
     encoderConfig.initialTicks = 0;
     encoderConfig.ticksPerWheelRevolution = 4096;
     encoderConfig.wheelDiameter = 4;
 
-    TankOdometry::GetInstance()->Initialize(encoderConfig, encoderConfig,
-            Pose(Vector2d(paths[1].getFirstWaypoint().position.getY(),
-                    -paths[1].getFirstWaypoint().position.getX()), Rotation2Dd(0)));
+    TankOdometry::GetInstance()->Initialize(encoderConfig, encoderConfig);
 }
 
 void chassis::periodic() {

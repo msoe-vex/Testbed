@@ -1,8 +1,6 @@
 #include "TestAuton.h"
-#include "../../include/PathManager.h"
 
-
-TestAuton::TestAuton(Chassis chassis) : Autonomous("Test Auton") {
+TestAuton::TestAuton(chassis * chassis) : Autonomous("Test Auton") {
     m_chassis = chassis;
 }
 

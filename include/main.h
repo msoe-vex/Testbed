@@ -39,6 +39,10 @@
 #include "chassis.h"
 #include "lift.h"
 #include "intake.h"
+#include "Auton.h"
+#include "PathManager.h"
+#include "TankOdometry.h"
+#include <unordered_set>
 
 /**
  * You should add more #includes here

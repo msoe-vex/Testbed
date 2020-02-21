@@ -1,5 +1,4 @@
 #include "main.h"
-#include "Auton.h"
 
 using namespace std;
 
@@ -16,7 +15,7 @@ pros::ADIGyro *gyro;
 lv_obj_t *robotImg;
 lv_obj_t *output;
 
-vector <Path> paths;
+unordered_map<string, Path> paths;
 
 lv_point_t line_points[100];
 
@@ -52,9 +51,7 @@ void initialize() {
 
     lv_label_set_text(output, "Loading paths.......");
 
-    printf("Opening file\n");
-
-    PathManager::GetInstance()->LoadPathsText(thing);
+    PathManager::GetInstance()->LoadPathsFile("/usd/path.json");
 
     int numPaths = PathManager::GetInstance()->NumPaths();
 
@@ -78,7 +75,6 @@ void initialize() {
 
             printf("X: %i Y: %i\n", x, y);
         }
-
 
         static lv_style_t style_line;
         lv_style_copy(&style_line, &lv_style_plain);
@@ -170,6 +166,8 @@ void opcontrol() {
         } else {
             intake.pivot(0);
         }
+
+        auto pose = TankOdometry::GetInstance()->GetPose();
 
         lv_obj_align(robotImg, NULL, LV_ALIGN_IN_BOTTOM_LEFT, inchesToPixels(pose.position.x() + (143.0 / 2.0)),
                      -inchesToPixels(pose.position.y()));
