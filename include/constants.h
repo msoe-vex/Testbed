@@ -11,7 +11,7 @@ const int LEFT_LIFT_PORT = 9;
 const int RIGHT_LIFT_PORT = 8;
 const int LEFT_INTAKE_PORT = 6;
 const int RIGHT_INTAKE_PORT = 5;
-const int TRAY_TILT_PORT = 7
+const int TRAY_TILT_PORT = 7;
 
 const int LIFT_LIMIT_PORT = 0;
 

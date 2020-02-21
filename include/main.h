@@ -40,6 +40,12 @@
 #include "Chassis.h"
 #include "Lift.h"
 #include "Intake.h"
+#include "Auton.h"
+#include "PathManager.h"
+#include "TankOdometry.h"
+#include "pathText.c"
+#include <unordered_map>
+#include "TestAuton.h"
 
 /**
  * You should add more #includes here
