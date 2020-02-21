@@ -16,5 +16,7 @@ public:
 
   double getRightSpeed();
 
+  void periodic();
+
   ~chassis();
 };
