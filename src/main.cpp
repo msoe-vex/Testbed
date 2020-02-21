@@ -8,6 +8,8 @@ lift lift(9, 8);
 
 intake intake(6, 5, 7);
 
+TestAuton testAuton(&chassis);
+
 /* BAD PORTS */
 
 pros::ADIGyro *gyro;
@@ -51,15 +53,19 @@ void initialize() {
 
     lv_label_set_text(output, "Loading paths.......");
 
-    PathManager::GetInstance()->LoadPathsFile("/usd/path.json");
+    printf("Loading paths.......");
+
+    PathManager::GetInstance()->LoadPathsText(pathText);
 
     int numPaths = PathManager::GetInstance()->NumPaths();
+
+    printf("Loaded %i paths", numPaths);
 
     if (numPaths > 0) {
         lv_label_set_text(output, "Sucessfully loaded paths!");
 
         paths = PathManager::GetInstance()->GetPaths();
-        auto waypoints = paths[0].getWaypoints();
+        auto waypoints = paths["WallToCubeStack3"].getWaypoints();
 
         //lv_point_t line_points[] = {{0, 0}, {5, 5}, {70, 70}, {120, 10}, {180, 60}, {240, 10} };
 
@@ -126,7 +132,15 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+    testAuton.AutonInit();
+
+    while(!testAuton.Complete()) {
+        chassis.periodic();
+        testAuton.Auton();
+        pros::delay(10);
+    }
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -148,6 +162,7 @@ void opcontrol() {
         int left = master.get_analog(ANALOG_LEFT_Y);
         int right = master.get_analog(ANALOG_RIGHT_Y);
         chassis.setSpeed(left, right);
+        chassis.periodic();
 
         lift.periodic(master);
 

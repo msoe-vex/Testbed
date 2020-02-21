@@ -16,7 +16,7 @@ chassis::chassis(int leftFrontDriveMotorPort, int leftRearDriveMotorPort,
 
     TankOdometry::EncoderConfig encoderConfig;
     encoderConfig.initialTicks = 0;
-    encoderConfig.ticksPerWheelRevolution = 4096;
+    encoderConfig.ticksPerWheelRevolution = 900;
     encoderConfig.wheelDiameter = 4;
 
     TankOdometry::GetInstance()->Initialize(encoderConfig, encoderConfig);

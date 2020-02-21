@@ -42,7 +42,9 @@
 #include "Auton.h"
 #include "PathManager.h"
 #include "TankOdometry.h"
-#include <unordered_set>
+#include "pathText.c"
+#include <unordered_map>
+#include "TestAuton.h"
 
 /**
  * You should add more #includes here

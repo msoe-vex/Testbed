@@ -4,12 +4,13 @@
 #include "FollowPathAction.h"
 #include "PathManager.h"
 #include "chassis.h"
-
+#include "Math/Pose.h"
 
 class TestAuton : public Autonomous {
 public:
     TestAuton(chassis * chassis);
     void AddNodes();
+    void AutonInit();
 
 private:
     chassis * m_chassis;
