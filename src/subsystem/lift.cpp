@@ -12,8 +12,6 @@ void Lift::ManualControl(pros::Controller controller) {
     SetLiftState(liftState::Manual, 0);
   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN) == 1) {
     SetLiftState(liftState::LowGoal, constants::LOW_GOAL_POS);
-  } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT) == 1) {
-    SetLiftState(liftState::FourStack, constants::FOUR_STACK_POS);
   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT) == 1) {
     SetLiftState(liftState::MediumGoal, constants::MID_GOAL_POS);
   }
@@ -24,7 +22,7 @@ void Lift::ManualControl(pros::Controller controller) {
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
       SetPower(-127);
     } else {
-      SetPower(0);
+      SetPower(5);
     }
   }
 }
@@ -48,7 +46,7 @@ void Lift::SetLiftState(liftState liftState, double setpoint) {
 
 void Lift::Periodic() {
   // Reset sensors
-  if (liftLimitSwitch->get_value() == 0) {
+  if (liftLimitSwitch->get_value() == 1) {
     liftMotor->tare_position();
   }
 
@@ -57,9 +55,7 @@ void Lift::Periodic() {
     // Do nothing
     break;
     case liftState::LowGoal:
-    case liftState::FourStack:
     case liftState::MediumGoal:
-    case liftState::HighGoal:
     case liftState::VariableSetpointPID:
       SetPIDPosition(currentSetpoint);
     break;

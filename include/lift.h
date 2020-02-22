@@ -8,9 +8,7 @@ public:
   enum class liftState {
     Manual,
     LowGoal,
-    FourStack,
     MediumGoal,
-    HighGoal,
     VariableSetpointPID
   };
 

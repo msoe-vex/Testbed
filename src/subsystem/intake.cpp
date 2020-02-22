@@ -1,8 +1,8 @@
 #include "Intake.h"
 
 Intake::Intake(int leftIntakeMotorPort, int rightIntakeMotorPort) {
-  leftIntakeMotor = new pros::Motor(leftIntakeMotorPort, true);
-  rightIntakeMotor = new pros::Motor(rightIntakeMotorPort, false);
+  leftIntakeMotor = new pros::Motor(leftIntakeMotorPort, false);
+  rightIntakeMotor = new pros::Motor(rightIntakeMotorPort, true);
 }
 
 void Intake::SetSpeed(int leftIntakeSpeed, int rightIntakeSpeed) {
