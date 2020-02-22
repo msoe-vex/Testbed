@@ -15,8 +15,8 @@ const int TRAY_TILT_PORT = 7;
 const int LIFT_LIMIT_PORT = 1;
 const int TRAY_LIMIT_PORT = 2;
 
-const double LOW_GOAL_POS = 200.0;
-const double MID_GOAL_POS = 400.0;
+const double LOW_GOAL_POS = 500.0;
+const double MID_GOAL_POS = 700.0;
 
 const double TRAY_SCORING_POS = 3650.0;
 

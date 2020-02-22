@@ -7,8 +7,8 @@ Lift::Lift(int liftMotorPort, int liftLimitPort) {
 }
 
 void Lift::ManualControl(pros::Controller controller) {
-  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1 ||
-      controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
+  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1 ||
+      controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
     SetLiftState(liftState::Manual, 0);
   } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN) == 1) {
     SetLiftState(liftState::LowGoal, constants::LOW_GOAL_POS);
@@ -17,9 +17,9 @@ void Lift::ManualControl(pros::Controller controller) {
   }
 
   if (currentLiftState == liftState::Manual) {
-    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1) {
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1) {
       SetPower(127);
-    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
+    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
       SetPower(-127);
     } else {
       SetPower(5);

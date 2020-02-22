@@ -11,9 +11,9 @@ void Intake::SetSpeed(int leftIntakeSpeed, int rightIntakeSpeed) {
 }
 
 void Intake::ManualControl(pros::Controller controller) {
-  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1) == 1) {
+  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) == 1) {
     SetSpeed(127, 127);
-  } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
+  } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2) == 1) {
     SetSpeed(-127, -127);
   } else {
     SetSpeed(0, 0);
