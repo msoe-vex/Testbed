@@ -27,7 +27,7 @@ void Lift::ManualControl(pros::Controller controller) {
     } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2) == 1) {
       SetPower(-127);
     } else {
-      SetPower(0);
+      SetPower(5);
     }
   }
 

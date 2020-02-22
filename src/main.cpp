@@ -128,14 +128,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-    printf("Starting Auto\n");
-    testAuton.AutonInit();
-
-    while(!testAuton.Complete()) {
-        robotConfig.chassis.Periodic();
-        testAuton.Auton();
-        pros::delay(10);
-    }
+	
 }
 
 /**
