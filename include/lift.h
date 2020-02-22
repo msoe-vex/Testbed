@@ -20,11 +20,11 @@ public:
 
   double currentSetpoint = 0;
 
-  pros::Motor *leftLiftMotor, *rightLiftMotor;
+  pros::Motor *liftMotor;
 
   pros::ADIDigitalIn *liftLimitSwitch;
 
-  Lift(int leftLiftMotorPort, int rightLiftMotorPort, int liftLimitPort);
+  Lift(int leftLiftMotorPort, int liftLimitPort);
 
   void ManualControl(pros::Controller controller);
 

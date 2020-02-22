@@ -3,14 +3,13 @@
 #include "API.h"
 
 namespace constants {
-const int LEFT_FRONT_DRIVE_PORT = 19;
+const int LEFT_FRONT_DRIVE_PORT = 4;
 const int LEFT_REAR_DRIVE_PORT = 2;
-const int RIGHT_FRONT_DRIVE_PORT = 20;
-const int RIGHT_REAR_DRIVE_PORT = 1;
-const int LEFT_LIFT_PORT = 9;
-const int RIGHT_LIFT_PORT = 8;
-const int LEFT_INTAKE_PORT = 6;
-const int RIGHT_INTAKE_PORT = 5;
+const int RIGHT_FRONT_DRIVE_PORT = 5;
+const int RIGHT_REAR_DRIVE_PORT = 3;
+const int LEFT_LIFT_PORT = 6;
+const int LEFT_INTAKE_PORT = 8;
+const int RIGHT_INTAKE_PORT = 9;
 const int TRAY_TILT_PORT = 7;
 
 const int LIFT_LIMIT_PORT = 1;
