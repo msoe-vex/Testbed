@@ -20,5 +20,7 @@ public:
 
   void SetPIDPosition(double position);
 
+  void SetPIDPosition(double position, double maxVel);
+
   ~Chassis();
 };

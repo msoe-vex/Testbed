@@ -129,8 +129,18 @@ void competition_initialize() {}
  */
 void autonomous() {
   robotConfig.chassis.SetPIDPosition(200);
-  pros::delay(2500);
+  robotConfig.intake.SetSpeed(-127, -127);
+  pros::delay(250);
   robotConfig.chassis.SetPIDPosition(0);
+  robotConfig.intake.SetSpeed(0, 0);
+  pros::delay(500);
+  // robotConfig.intake.SetSpeed(-127, -127);
+  // pros::delay(500);
+  // robotConfig.chassis.SetPIDPosition(2000, 100);
+  // robotConfig.lift.SetPIDPosition(constants::FOUR_STACK_POS);
+  robotConfig.chassis.SetPIDPosition(-2000, 100);
+  pros::delay(2500);
+  robotConfig.chassis.SetPIDPosition(0, 200);
 }
 
 /**

@@ -47,6 +47,13 @@ void Chassis::SetPIDPosition(double position) {
   rightRearDriveMotor->move_absolute(position, 150);
 }
 
+void Chassis::SetPIDPosition(double position, double maxVel) {
+  leftFrontDriveMotor->move_absolute(position, maxVel);
+  leftRearDriveMotor->move_absolute(position, maxVel);
+  rightFrontDriveMotor->move_absolute(position, maxVel);
+  rightRearDriveMotor->move_absolute(position, maxVel);
+}
+
 Chassis::~Chassis() { // Deconstructor
   free(leftFrontDriveMotor); // Free memory
   free(leftRearDriveMotor); // Free memory

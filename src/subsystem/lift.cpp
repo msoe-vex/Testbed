@@ -70,6 +70,16 @@ void Lift::Periodic() {
   }
 }
 
+void Lift::SetPIDPosition(double position) {
+  leftLiftMotor->move_absolute(position, constants::LIFT_MAX_VEL);
+  rightLiftMotor->move_absolute(position, constants::LIFT_MAX_VEL);
+}
+
+void Lift::SetPIDPosition(double position, double maxVel) {
+  leftLiftMotor->move_absolute(position, maxVel);
+  rightLiftMotor->move_absolute(position, maxVel);
+}
+
 Lift::~Lift() {
   free(leftLiftMotor);
   free(rightLiftMotor);
@@ -83,11 +93,6 @@ Lift::~Lift() {
 void Lift::SetPower(int liftPower) {
   leftLiftMotor->move(liftPower);
   rightLiftMotor->move(liftPower);
-}
-
-void Lift::SetPIDPosition(double position) {
-  leftLiftMotor->move_absolute(position, constants::LIFT_MAX_VEL);
-  rightLiftMotor->move_absolute(position, constants::LIFT_MAX_VEL);
 }
 
 void Lift::SetPIDVelocity(double liftVelocity) {

@@ -15,7 +15,7 @@ void Tilt::PivotUp() {
   } else if (error > 0.1 && error < 0.2) {
     power = 100;
   } else {
-    power = 30;
+    power = 60;
   }
 
   trayTiltMotor->move_absolute(constants::TRAY_SCORING_POS, power);

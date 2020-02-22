@@ -40,12 +40,14 @@ public:
 
   void Periodic();
 
+  void SetPIDPosition(double position);
+
+  void SetPIDPosition(double position, double maxVel);
+
   ~Lift();
 
 private:
   void SetPower(int liftPower);
-
-  void SetPIDPosition(double position);
 
   void SetPIDVelocity(double velocity);
 };
