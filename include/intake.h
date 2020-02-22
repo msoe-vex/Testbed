@@ -5,6 +5,13 @@
 
 class Intake {
 public:
+  enum class intakeState {
+    Manual,
+    Hold
+  };
+
+  intakeState currentIntakeState;
+
   pros::Motor *leftIntakeMotor, *rightIntakeMotor;
 
   Intake(int leftIntakeMotorPort, int rightIntakeMotorPort);
@@ -18,4 +25,7 @@ public:
   void ManualControl(pros::Controller controller);
 
   ~Intake();
+
+private:
+  void SetPIDPositionRelative(double position);
 };

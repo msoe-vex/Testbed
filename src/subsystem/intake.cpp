@@ -21,7 +21,14 @@ void Intake::ManualControl(pros::Controller controller) {
 }
 
 void Intake::Periodic() {
-
+  switch(currentIntakeState) {
+    case intakeState::Manual:
+    // Do nothing
+    break;
+    case intakeState::Hold:
+      SetPIDPositionRelative(0);
+    break;
+  }
 }
 
 Intake::~Intake() {
@@ -30,4 +37,9 @@ Intake::~Intake() {
 
   leftIntakeMotor = 0;
   rightIntakeMotor = 0;
+}
+
+void Intake::SetPIDPositionRelative(double position) {
+  leftIntakeMotor->move_relative(position, 200);
+  rightIntakeMotor->move_relative(position, 200);
 }

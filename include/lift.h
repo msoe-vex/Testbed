@@ -36,6 +36,8 @@ public:
 
   void SetLiftState(liftState liftState, double setpoint);
 
+  bool GetAtDestination();
+
   void Periodic();
 
   ~Lift();

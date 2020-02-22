@@ -37,6 +37,7 @@
 #include "api.h"
 
 #include "Constants.h"
+#include "Robot.h"
 #include "Chassis.h"
 #include "Lift.h"
 #include "Intake.h"
@@ -47,6 +48,8 @@
 #include "pathText.c"
 #include <unordered_map>
 #include "TestAuton.h"
+
+// TODO include everything
 
 /**
  * You should add more #includes here

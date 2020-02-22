@@ -5,6 +5,14 @@
 
 class Tilt {
 public:
+  enum class trayState {
+    Manual,
+    Down,
+    Up
+  };
+
+  trayState currentTrayState;
+
   pros::Motor *trayTiltMotor;
 
   pros::ADIDigitalIn *trayLimitSwitch;
@@ -16,6 +24,10 @@ public:
   void PivotDown();
 
   void ManualControl(pros::Controller controller);
+
+  int IsTrayDown();
+
+  double GetTrayPosition();
 
   void Periodic();
 

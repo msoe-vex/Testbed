@@ -21,7 +21,7 @@ const double FOUR_STACK_POS = 2400.0;
 const double MID_GOAL_POS = 2600.0;
 const double HIGH_GOAL_POS = 4280.0;
 
-const double TRAY_SCORING_POS = 1200.0;
+const double TRAY_SCORING_POS = 3650.0;
 
 const double LIFT_MAX_VEL = 160.0;
 const double TRAY_MAX_VEL = 200.0;

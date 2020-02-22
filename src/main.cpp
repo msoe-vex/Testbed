@@ -2,19 +2,9 @@
 
 using namespace std;
 
-Chassis chassis(constants::LEFT_FRONT_DRIVE_PORT, constants::LEFT_REAR_DRIVE_PORT,
-		            constants::RIGHT_FRONT_DRIVE_PORT, constants::RIGHT_REAR_DRIVE_PORT);
+Robot robotConfig;
 
-Lift lift(constants::LEFT_LIFT_PORT, constants::RIGHT_LIFT_PORT,
-	        constants::LIFT_LIMIT_PORT);
-
-Intake intake(constants::LEFT_INTAKE_PORT, constants::RIGHT_INTAKE_PORT);
-
-Tilt tilt(constants::TRAY_TILT_PORT, constants::TRAY_LIMIT_PORT);
-
-TestAuton testAuton(&chassis);
-
-/* BAD PORTS */
+TestAuton testAuton(&robotConfig);
 
 pros::ADIGyro *gyro;
 
@@ -142,7 +132,7 @@ void autonomous() {
     testAuton.AutonInit();
 
     while(!testAuton.Complete()) {
-        chassis.Periodic();
+        robotConfig.chassis.Periodic();
         testAuton.Auton();
         pros::delay(10);
     }
@@ -167,17 +157,27 @@ void opcontrol() {
 	while (true) {
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
-		chassis.SetSpeed(left, right);
-		chassis.Periodic();
 
-		lift.ManualControl(master);
-		lift.Periodic();
+		robotConfig.chassis.SetSpeed(left, right);
+		robotConfig.chassis.Periodic();
+
+		robotConfig.intake.ManualControl(master);
+		robotConfig.intake.Periodic();
+
+		robotConfig.lift.ManualControl(master);
+		robotConfig.lift.Periodic();
+
+		robotConfig.tilt.ManualControl(master);
+		robotConfig.tilt.Periodic();
 
 		auto pose = TankOdometry::GetInstance()->GetPose();
 
 		lv_obj_align(robotImg, NULL, LV_ALIGN_IN_BOTTOM_LEFT, inchesToPixels(pose.position.x() + (143.0 / 2.0)),
 								 -inchesToPixels(pose.position.y()));
 		lv_obj_set_top(robotImg, true);
+		//
+		// pros::lcd::print(0, "Tray Limt: %1d", robotConfig.tilt.IsTrayDown());
+		// pros::lcd::print(1, "Tray Sensor: %3.2f", robotConfig.tilt.GetTrayPosition());
 
 		pros::delay(20);
 	}
