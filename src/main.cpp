@@ -128,7 +128,9 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	
+  robotConfig.chassis.SetPIDPosition(200);
+  pros::delay(2500);
+  robotConfig.chassis.SetPIDPosition(0);
 }
 
 /**

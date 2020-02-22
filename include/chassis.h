@@ -18,5 +18,7 @@ public:
 
   void Periodic();
 
+  void SetPIDPosition(double position);
+
   ~Chassis();
 };

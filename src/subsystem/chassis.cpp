@@ -40,6 +40,13 @@ double Chassis::GetRightSpeed() {
   return (rightFrontDriveMotor->get_position() + rightRearDriveMotor->get_position()) / 2;
 }
 
+void Chassis::SetPIDPosition(double position) {
+  leftFrontDriveMotor->move_absolute(position, 150);
+  leftRearDriveMotor->move_absolute(position, 150);
+  rightFrontDriveMotor->move_absolute(position, 150);
+  rightRearDriveMotor->move_absolute(position, 150);
+}
+
 Chassis::~Chassis() { // Deconstructor
   free(leftFrontDriveMotor); // Free memory
   free(leftRearDriveMotor); // Free memory
@@ -51,3 +58,18 @@ Chassis::~Chassis() { // Deconstructor
   rightFrontDriveMotor = 0; // Clear reference
   rightRearDriveMotor = 0;
 }
+/*
+void Chassis::SetPIDPosition(double position) {
+  leftFrontDriveMotor->move_absolute(position, constants::LIFT_MAX_VEL);
+  leftRearDriveMotor->move_absolute(position, constants::LIFT_MAX_VEL);
+  rightFrontDriveMotor->move_absolute(position, constants::LIFT_MAX_VEL);
+  rightRearDriveMotor->move_absolute(position, constants::LIFT_MAX_VEL);
+}
+
+void Chassis::SetPIDVelocity(double liftVelocity) {
+  leftFrontDriveMotor->move_velocity(liftVelocity);
+  leftRearDriveMotor->move_velocity(liftVelocity);
+  rightFrontDriveMotor->move_velocity(liftVelocity);
+  rightRearDriveMotor-->move_velocity(liftVelocity);
+}
+*/

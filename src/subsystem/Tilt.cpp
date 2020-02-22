@@ -9,13 +9,16 @@ Tilt::Tilt(int intakePivotMotorPort, int trayLimitPort) {
 void Tilt::PivotUp() {
   double error = (constants::TRAY_SCORING_POS - GetTrayPosition()) / constants::TRAY_SCORING_POS;
   double power;
-  if (error < 0.25) {
-    power = 15;
+
+  if (error >= 0.2) {
+    power = 200;
+  } else if (error > 0.1 && error < 0.2) {
+    power = 100;
   } else {
-    power = (error * 80) + 20;
+    power = 30;
   }
 
-  trayTiltMotor->move_absolute(constants::TRAY_SCORING_POS, (int) power);
+  trayTiltMotor->move_absolute(constants::TRAY_SCORING_POS, power);
 }
 
 void Tilt::PivotDown() {
